@@ -1,0 +1,40 @@
+
+name: Determinism
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  determinism:
+    name: Deterministic replay
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --parallel 2
+
+      - name: Verify determinism test exists
+        shell: bash
+        run: |
+          ctest --test-dir build -N -R '^determinism$' > ctest-tests.txt
+          if ! grep -q 'Test #[0-9]*: determinism' ctest-tests.txt; then
+            cat ctest-tests.txt
+            echo "Required CTest test 'determinism' was not registered."
+            exit 1
+          fi
+
+      - name: Run determinism test
+        run: ctest --test-dir build -R '^determinism$' --output-on-failure
