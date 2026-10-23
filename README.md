@@ -35,7 +35,7 @@ Some features listed above are in development. See [Status](#status).
 ### Build
 
 ```bash
-git clone https://github.com/<owner>/Vivarium.git
+git clone https://github.com/TxbiG/Vivarium.git
 cd Vivarium
 cmake -B build
 cmake --build build
