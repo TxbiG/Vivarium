@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "vivarium-sim"
+version = "0.2.0b0"
+description = "Reproducible simulation environments for agent training"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+classifiers = ["Development Status :: 4 - Beta", "Programming Language :: Python :: 3", "Programming Language :: C++"]
+[tool.setuptools]
+package-dir = {"" = "."}
+[tool.setuptools.packages.find]
+where = ["."]

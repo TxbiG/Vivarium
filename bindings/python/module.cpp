@@ -1,0 +1,5 @@
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include "vivarium/vivarium.hpp"
+namespace py=pybind11;using namespace vivarium;
+PYBIND11_MODULE(_vivarium,m){m.doc()="Vivarium native C++ environments";py::class_<EnvironmentSpec>(m,"EnvironmentSpec").def_readonly("id",&EnvironmentSpec::id).def_readonly("description",&EnvironmentSpec::description).def_readonly("observation_size",&EnvironmentSpec::observation_size).def_readonly("action_size",&EnvironmentSpec::action_size);py::class_<StepResult>(m,"StepResult").def_readonly("observation",&StepResult::observation).def_readonly("reward",&StepResult::reward).def_readonly("terminated",&StepResult::terminated).def_readonly("truncated",&StepResult::truncated).def_readonly("info",&StepResult::info);py::class_<Environment,std::shared_ptr<Environment>>(m,"Environment").def("reset",&Environment::reset).def("step",&Environment::step).def("observe",&Environment::observe).def("close",&Environment::close).def_property_readonly("spec",&Environment::spec);m.def("make_native",&make_environment);}
